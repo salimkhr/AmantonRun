@@ -2,4 +2,5 @@
     <string name="app_name">AmantonRun</string>
     <string name="title_activity_th">AmantonRun</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="perso">perso</string>
 </resources>

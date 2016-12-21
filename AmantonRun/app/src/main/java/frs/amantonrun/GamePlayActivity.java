@@ -1,17 +1,23 @@
 package frs.amantonrun;
-
 import android.content.pm.ActivityInfo;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
-public class GamePlayActivity extends AppCompatActivity {
+public class GamePlayActivity extends AppCompatActivity implements SensorEventListener {
 
-    public static ImageView i;
-    private float x;
+    private ImageView i;
+    Animation anim;
+    private int largeur;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,26 +28,46 @@ public class GamePlayActivity extends AppCompatActivity {
 
         DisplayMetrics ecran = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(ecran);
-        int largeur = ecran.widthPixels;
+        largeur = ecran.widthPixels;
 
-        Log.i("TAG",largeur+"");
-
-        this.x = largeur/2;
+        sensorManager= (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
-    public boolean onTouchEvent(MotionEvent event) {
-        Log.i("TAG",this.x+" "+event.getX()+" "+Math.abs(this.x-event.getX()));
+    @Override
+    protected void onPause() {
+        sensorManager.unregisterListener(this, accelerometer);
+        super.onPause();
+    }
 
-        if(Math.abs(this.x-event.getX()) < 50)
-        {
-            i.setX(event.getX());
-            this.x= event.getX();
-            Log.i("TAG","OK");
-        }
+    @Override
+    protected void onResume() {
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        super.onResume();
+    }
+
+    public void onSensorChanged(SensorEvent event) {
+
+
+
+        Log.i("PERSO",i.getWidth()+"");
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+            if(Math.abs(event.values[0]) > 1 && i.getX() - (event.values[0]*5)>0 && i.getX() - (event.values[0]*5)+(i.getWidth())<largeur)
+            {
+                if(event.values[0]<0)
+                    i.setImageResource(R.mipmap.right);
+                else
+                    i.setImageResource(R.mipmap.left);
+                i.setX(i.getX() - event.values[0]*5);
+            }
         else
-        {
-            Log.i("TAG","!OK");
-        }
-        return true;
+            i.setImageResource(R.mipmap.center);
     }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
 }

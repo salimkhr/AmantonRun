@@ -18,6 +18,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
     private int largeur;
     private SensorManager sensorManager;
     private Sensor accelerometer;
+    private boolean move;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
         sensorManager= (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        move=false;
     }
 
     @Override
@@ -49,16 +51,22 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
 
     public void onSensorChanged(SensorEvent event) {
 
-
-
         Log.i("PERSO",i.getWidth()+"");
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             if(Math.abs(event.values[0]) > 1 && i.getX() - (event.values[0]*5)>0 && i.getX() - (event.values[0]*5)+(i.getWidth())<largeur)
             {
                 if(event.values[0]<0)
-                    i.setImageResource(R.mipmap.right);
+                    if(move)
+                        i.setImageResource(R.mipmap.right);
+                    else
+                        i.setImageResource(R.mipmap.right2);
                 else
+                    if(move)
                     i.setImageResource(R.mipmap.left);
+                    else
+                        i.setImageResource(R.mipmap.left2);
+
+                move = !move;
                 i.setX(i.getX() - event.values[0]*5);
             }
         else

@@ -18,7 +18,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
     private int largeur;
     private SensorManager sensorManager;
     private Sensor accelerometer;
-    private boolean move;
+    private int move;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
         sensorManager= (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
-        move=false;
+        move=0;
     }
 
     @Override
@@ -51,26 +51,42 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
 
     public void onSensorChanged(SensorEvent event) {
 
-        Log.i("PERSO",i.getWidth()+"");
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             if(Math.abs(event.values[0]) > 1 && i.getX() - (event.values[0]*5)>0 && i.getX() - (event.values[0]*5)+(i.getWidth())<largeur)
             {
                 if(event.values[0]<0)
-                    if(move)
+                    if(move<4)
+                    {
                         i.setImageResource(R.mipmap.right);
-                    else
-                        i.setImageResource(R.mipmap.right2);
-                else
-                    if(move)
-                    i.setImageResource(R.mipmap.left);
-                    else
-                        i.setImageResource(R.mipmap.left2);
+                        i.invalidate();
+                    }
 
-                move = !move;
+                    else
+                    {
+                        i.setImageResource(R.mipmap.right2);
+                        i.invalidate();
+                    }
+                else
+                    if(move<=4)
+                    {
+                        i.setImageResource(R.mipmap.left);
+                        i.invalidate();
+                    }
+                    else
+                    {
+                        i.setImageResource(R.mipmap.left2);
+                        i.invalidate();
+                    }
+                Log.i("PERSO",move+"");
+                move = (move+1)%8;//0 1 2 3
                 i.setX(i.getX() - event.values[0]*5);
             }
         else
-            i.setImageResource(R.mipmap.center);
+            {
+                i.setImageResource(R.mipmap.center);
+                i.invalidate();
+            }
+
     }
 
     @Override

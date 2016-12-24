@@ -67,7 +67,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
                         i.invalidate();
                     }
                 else
-                    if(move<=4)
+                    if(move>=4)
                     {
                         i.setImageResource(R.mipmap.left);
                         i.invalidate();

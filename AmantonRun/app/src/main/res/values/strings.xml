@@ -3,4 +3,5 @@
     <string name="title_activity_th">AmantonRun</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="perso">perso</string>
+    <string name="score">score : 00</string>
 </resources>

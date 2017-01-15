@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_game_over"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000BAD" android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="frs.amantonrun.GameOverActivity">
+
+
+    <TextView
+        android:text="A problem has been detected and Android has been shut down to prevent damage of your phone."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="23dp"
+        android:id="@+id/textView11" />
+
+    <TextView
+        android:text="The problem seems to be caused by the following file: androCMD.SYS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView11"
+        android:layout_alignRight="@+id/textView11"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="23dp"
+        android:id="@+id/textView13"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_alignStart="@+id/textView11" />
+    <TextView
+        android:text="GAME_OVER"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView13"
+        android:layout_alignRight="@+id/textView13"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="23dp"
+        android:id="@+id/textView14"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_alignStart="@+id/textView11" />
+
+    <TextView
+        android:text="If this is the first time you've seen this stop error screen, restart your phone. If this screen appears again, follow these steps:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView14"
+        android:layout_alignRight="@+id/textView14"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="23dp"
+        android:id="@+id/textView15"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_alignStart="@+id/textView11" />
+    <TextView
+        android:text="Check to be sure you have adequate disk space. If a driver is identified in the Stop message, disable the driver or check with the manufacturer for driver updates. try changing video adapters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView15"
+        android:layout_alignRight="@+id/textView15"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="23dp"
+        android:id="@+id/textView16"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_alignStart="@+id/textView11" />
+    <TextView
+        android:text="Score :"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView16"
+        android:layout_alignRight="@+id/textView16"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="23dp"
+        android:id="@+id/textViewScore"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_alignStart="@+id/textView11" />
+    <TextView
+        android:text="Collecting sata for crash dump ....
+Initializing disk for crash dump ..."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewScore"
+        android:layout_alignRight="@+id/textViewScore"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="23dp"
+        android:id="@+id/textView17"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_alignStart="@+id/textView11" />
+</RelativeLayout>

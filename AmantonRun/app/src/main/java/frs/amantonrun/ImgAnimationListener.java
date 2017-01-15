@@ -6,25 +6,23 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import static frs.amantonrun.R.string.perso;
+
 /**
  * Created by salim on 05/01/17.
  */
 
     public class ImgAnimationListener implements AnimationListener {
 
-    private final int score;
     private final Boolean piege;
-    private int randX,hauteur;
-    private ImageView img,perso;
+    private final ImageView img;
+    private int randX;
     private RelativeLayout rl;
 
-    public ImgAnimationListener(ImageView img, ImageView perso, RelativeLayout rl, int randX, int hauteur, int score, Boolean piege) {
-        this.img = img;
-        this.perso = perso;
+    public ImgAnimationListener(ImageView img, RelativeLayout rl, int randX, Boolean piege) {
+        this.img=img;
         this.rl = rl;
         this.randX = randX;
-        this.hauteur = hauteur;
-        this.score=score;
         this.piege = piege;
     }
 
@@ -36,7 +34,7 @@ import android.widget.RelativeLayout;
     @Override
     public void onAnimationEnd(Animation animation) {
 
-       if(perso.getX()+perso.getWidth()/2>randX && perso.getX()<randX+perso.getWidth()/2) {
+       if(GamePlayActivity.getPerso().getX()+GamePlayActivity.getPerso().getWidth()/2>randX && GamePlayActivity.getPerso().getX()<randX+GamePlayActivity.getPerso().getWidth()/2) {
            if(piege)
                GamePlayActivity.setVie(GamePlayActivity.getVie()-1);
            else
@@ -46,7 +44,7 @@ import android.widget.RelativeLayout;
        else
        {
 
-           TranslateAnimation anim = new TranslateAnimation(randX,randX,perso.getY(),hauteur);
+           TranslateAnimation anim = new TranslateAnimation(randX,randX,GamePlayActivity.getPerso().getY(),GamePlayActivity.getHauteur());
            anim.setFillAfter(false);
            anim.setFillBefore(true);
            anim.setDuration(300);

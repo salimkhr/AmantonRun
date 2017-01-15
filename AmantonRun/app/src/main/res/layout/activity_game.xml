@@ -39,33 +39,33 @@
         android:id="@+id/linearLayout">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/presence_online"
+            app:srcCompat="@mipmap/life"
             android:id="@+id/life1"
             android:layout_weight="1" />
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/presence_online"
+            app:srcCompat="@mipmap/life"
             android:id="@+id/life2"
             android:layout_weight="1" />
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/presence_online"
+            app:srcCompat="@mipmap/life"
             android:id="@+id/life3"
             android:layout_weight="1" />
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/presence_online"
+            app:srcCompat="@mipmap/life"
             android:id="@+id/life4"
             android:layout_weight="1" />
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/presence_online"
+            app:srcCompat="@mipmap/life"
             android:id="@+id/life5"
             android:layout_weight="1" />
     </LinearLayout>

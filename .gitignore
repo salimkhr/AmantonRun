@@ -34,7 +34,9 @@ captures/
 
 # Intellij
 *.iml
-.idea/workspace.xml
+AmantonRun/.idea/*
 
 # Keystore files
 *.jks
+
+AmantonRun/app/build.gradle

@@ -1,5 +1,6 @@
 package frs.amantonrun;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -24,22 +25,25 @@ import java.util.ArrayList;
 
 public class GamePlayActivity extends AppCompatActivity implements SensorEventListener {
 
-    private ImageView i;
+    private static ImageView i;
     private int largeur;
-    private int hauteur;
+    private static int hauteur;
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private int move;
     private static TextView tvScore;
     private static int score = 0;
-    private static int nbVie = 5;
+    private static int nbVie;
     private Thread thread;
     private static ArrayList<ImageView> arrayImg;
-    private static AlertDialog dialog;
+    private AlertDialog dialog;
+    private boolean running;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        nbVie = 5;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game);
         i = (ImageView) findViewById(R.id.imageView);
@@ -60,12 +64,11 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
 
         sensorManager= (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
         move=0;
 
         dialog = new AlertDialog.Builder(GamePlayActivity.this).create();
-        dialog.setTitle("Alert");
-        dialog.setMessage("Alert message to be shown");
+        dialog.setTitle("Score");
         dialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -73,13 +76,18 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
                     }
                 });
 
+        running = true;
+
         thread = new Thread() {
+
             @Override
             public void run() {
                 try {
                     while(nbVie > 0) {
                         sleep(500);
-                        runOnUiThread(new Runnable() {
+                        Log.d("perso",running+"");
+                        if(running)
+                            runOnUiThread(new Runnable() {
                             public void run() {
 
                                 Boolean piege = Math.random()>0.5;
@@ -111,7 +119,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
                                 anim.setDuration(1000);
                                 anim.setInterpolator(new LinearInterpolator());
 
-                                ImgAnimationListener imgl = new ImgAnimationListener(iv,i,rl,randX,hauteur,score,piege);
+                                ImgAnimationListener imgl = new ImgAnimationListener(iv,rl,randX,piege);
 
                                 anim.setAnimationListener(imgl);
 
@@ -119,6 +127,9 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
                             }
                         });
                     }
+                    Intent i =  new Intent(getApplicationContext(),GameOverActivity.class);
+                    i.putExtra("score",score);
+                    startActivity(i);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -131,19 +142,21 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
     @Override
     protected void onPause() {
         sensorManager.unregisterListener(this, accelerometer);
+        running = false;
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        running = true;
         super.onResume();
     }
 
     public void onSensorChanged(SensorEvent event) {
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
-            if(Math.abs(event.values[0]) > 1 && i.getX() - (event.values[0]*5)>0 && i.getX() - (event.values[0]*5)+(i.getWidth())<largeur)
+            if(Math.abs(event.values[0]) > 1 && i.getX() - (event.values[0]*4)>0 && i.getX() - (event.values[0]*4)+(i.getWidth())<largeur)
             {
                 if(event.values[0]<0)
                     if(move<4)
@@ -185,19 +198,22 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
     }
 
     public static int getScore(){
-        return GamePlayActivity.score;
+        return score;
     }
 
-    public static void setVie(int score){
-        GamePlayActivity.nbVie= score;
-        if(score >= 0)
-            GamePlayActivity.arrayImg.get(score).setVisibility(View.INVISIBLE);
-        else
-            dialog.show();
+    public static void setVie(int nbVie){
+        GamePlayActivity.nbVie= nbVie;
+        if(nbVie >= 0)
+            arrayImg.get(nbVie).setVisibility(View.INVISIBLE);
     }
 
     public static int getVie(){
-        return GamePlayActivity.nbVie;
+        return nbVie;
+    }
+
+    public static ImageView getPerso()
+    {
+        return i;
     }
 
     @Override
@@ -205,4 +221,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
 
     }
 
+    public static int getHauteur() {
+        return hauteur;
+    }
 }

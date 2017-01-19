@@ -1,4 +1,5 @@
 package frs.amantonrun;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -6,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +40,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
     private static ArrayList<ImageView> arrayImg;
     private AlertDialog dialog;
     private boolean running;
+    private static Vibrator vib;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -75,6 +78,8 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
                         dialog.dismiss();
                     }
                 });
+
+        vib = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
 
         running = true;
 
@@ -223,5 +228,9 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
 
     public static int getHauteur() {
         return hauteur;
+    }
+
+    public static Vibrator getVib() {
+        return vib;
     }
 }

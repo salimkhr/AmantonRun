@@ -1,4 +1,7 @@
 package frs.amantonrun;
+import android.content.Context;
+import android.os.Vibrator;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.LinearInterpolator;
@@ -36,7 +39,12 @@ import static frs.amantonrun.R.string.perso;
 
        if(GamePlayActivity.getPerso().getX()+GamePlayActivity.getPerso().getWidth()/2>randX && GamePlayActivity.getPerso().getX()<randX+GamePlayActivity.getPerso().getWidth()/2) {
            if(piege)
+           {
                GamePlayActivity.setVie(GamePlayActivity.getVie()-1);
+               long [] tmp ={10000,20000,3000,4000,5000};
+               GamePlayActivity.getVib().vibrate(500);
+               Log.d("vibreur","VIB");
+           }
            else
                GamePlayActivity.setScore(GamePlayActivity.getScore()+1);
            rl.removeView(img);

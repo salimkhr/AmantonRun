@@ -3,5 +3,15 @@
     <string name="title_activity_th">AmantonRun</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="perso">perso</string>
-    <string name="score">score : 00</string>
+    <string name="score">score : </string>
+    <string name="a_problem_has_been_detected">A problem has been detected and Android has been shut down to prevent damage of your phone.</string>
+    <string name="the_problem">The problem seems to be caused by the following file: androCMD.SYS</string>
+    <string name="game_over">GAME_OVER</string>
+    <string name="if_this_is_the_first_time">If this is the first time you\'ve seen this stop error screen, restart your phone. If this screen appears again, follow these steps:</string>
+    <string name="check_to_be_sur">Check to be sure you have adequate disk space. If a driver is identified in the Stop message, disable the driver or check with the manufacturer for driver updates. try changing video adapters.</string>
+    <string name="amanton_s_bros">Amanton\'s bros</string>
+    <string name="si_tu_veux_gagner_la_partie">Si tu veux gagner la partie evite les pieges et recupere un maximum d\'objet pour augmenter ton score</string>
+    <string name="les_objets_a_recuperer">les objets a recuperer</string>
+    <string name="les_pieges">Les pieges</string>
+    <string name="la_vitesse">La vitesse</string>
 </resources>

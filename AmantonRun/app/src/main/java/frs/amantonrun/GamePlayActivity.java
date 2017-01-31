@@ -1,33 +1,36 @@
 package frs.amantonrun;
+import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Vibrator;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
+import android.view.WindowManager;
+import android.view.animation.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import frs.amantonrun.listener.ImgAnimationListener;
+import frs.amantonrun.sound.SoundManager;
 
 public class GamePlayActivity extends AppCompatActivity implements SensorEventListener {
 
     private static ImageView i;
+    private static SoundManager sound;
     private int largeur;
     private static int hauteur;
     private SensorManager sensorManager;
@@ -38,14 +41,35 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
     private static int nbVie;
     private Thread thread;
     private static ArrayList<ImageView> arrayImg;
-    private AlertDialog dialog;
     private boolean running;
     private static Vibrator vib;
+    private static int rapid = 0;
+    private static MediaPlayer mpIe,mpMoz;
+    private long time;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        sound = new SoundManager(this);
+        sound.addSound(0,R.raw.paspiege);
+        sound.addSound(1,R.raw.piege);
+        sound.addSound(2,R.raw.gameover);
+        MediaPlayer.OnCompletionListener mpListener = new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                rapid = 0;
+            }
+        };
 
+
+        mpIe =  MediaPlayer.create(getApplicationContext(), R.raw.ie);
+        mpIe.setOnCompletionListener(mpListener);
+
+        mpMoz = MediaPlayer.create(getApplicationContext(), R.raw.moz);
+        mpMoz.setOnCompletionListener(mpListener);
+
+        score = 0;
         nbVie = 5;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game);
@@ -65,19 +89,12 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
         largeur = ecran.widthPixels;
         hauteur = ecran.heightPixels;
 
+        i.setMinimumWidth(largeur/8);
+
         sensorManager= (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
         move=0;
-
-        dialog = new AlertDialog.Builder(GamePlayActivity.this).create();
-        dialog.setTitle("Score");
-        dialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
 
         vib = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -89,51 +106,96 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
             public void run() {
                 try {
                     while(nbVie > 0) {
-                        sleep(500);
+
+                        int slip = 500-(score*2);
+                        sleep((slip>200)?slip:200);
                         Log.d("perso",running+"");
                         if(running)
                             runOnUiThread(new Runnable() {
                             public void run() {
 
-                                Boolean piege = Math.random()>0.5;
+                                int rand  = (int)(Math.random()*100);
+                                int piege;
 
                                 ImageView iv = new ImageView(getApplicationContext());
-
-                                if(piege)
+                                if(rand<45)
+                                {
                                     if(Math.random()>0.5)
                                         iv.setImageResource(R.mipmap.windows);
                                     else
                                         iv.setImageResource(R.mipmap.java);
-                                else
+
+                                    piege=1;
+                                }
+                                else if (rand<90)
+                                {
                                     if(Math.random()>0.5)
                                         iv.setImageResource(R.mipmap.linux);
                                     else
                                         iv.setImageResource(R.mipmap.c);
 
-                                int width = 60;
-                                int height = 60;
-                                LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
+                                    piege=1;
+                                }
+                                else
+                                {
+                                    if(Math.random()>0.5)
+                                    {
+                                        iv.setImageResource(R.mipmap.moz);
+                                        piege = 2;
+                                    }
+                                    else
+                                    {
+                                        iv.setImageResource(R.mipmap.ie);
+                                        piege = 3;
+                                    }
+
+                                }
+
+                                int width = largeur/12;
+                                LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,width);
                                 iv.setLayoutParams(parms);
 
                                 RelativeLayout rl = (RelativeLayout) findViewById(R.id.layout);
                                 rl.addView(iv);
-                                final int randX = (int)(Math.random()*(largeur-iv.getWidth()));
-                                //Log.i("Perso",randX+"");
-                                TranslateAnimation anim = new TranslateAnimation(randX,randX,0,i.getY());
-                                anim.setFillAfter(true);
-                                anim.setDuration(1000);
-                                anim.setInterpolator(new LinearInterpolator());
 
-                                ImgAnimationListener imgl = new ImgAnimationListener(iv,rl,randX,piege);
+                                final int randX = (int)(Math.random()*(largeur-width));
+                                iv.setX(randX);
 
-                                anim.setAnimationListener(imgl);
+                                ValueAnimator anim = ValueAnimator.ofFloat(0,hauteur);
+                                int duration = 3000-(score*5);
+                                anim.setDuration((duration>1000)?duration:1000);
 
-                                iv.startAnimation(anim);
+                                //anim.setInterpolator(new AnticipateInterpolator());
+                                //anim.setInterpolator(new OvershootInterpolator());
+                                //anim.setInterpolator(new AnticipateOvershootInterpolator());
+                                //anim.setInterpolator(new CycleInterpolator(1));
+                                //anim.setInterpolator(new BounceInterpolator());
+                                anim.setInterpolator(new AccelerateInterpolator());
+                                //anim.setInterpolator(new DecelerateInterpolator());
+                                //anim.setInterpolator(new AccelerateDecelerateInterpolator());
+
+                                ImgAnimationListener imgl = new ImgAnimationListener(rl,iv,piege);
+
+                                anim.addUpdateListener(imgl);
+                                anim.addListener(imgl);
+
+                                anim.start();
                             }
                         });
                     }
                     Intent i =  new Intent(getApplicationContext(),GameOverActivity.class);
                     i.putExtra("score",score);
+                    long time2 = new Date().getTime();
+                    Log.d("scoreSQL",time2+" time2");
+
+                    long timeDiff = time2-time;
+
+                    Log.d("scoreSQL",timeDiff+" timeDiff");
+
+
+                    i.putExtra("time",timeDiff);
+                    mpMoz.stop();
+                    mpIe.stop();
                     startActivity(i);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -142,6 +204,10 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
         };
 
         thread.start();
+        
+        time = new Date().getTime();
+
+        Log.d("scoreSQL",time+" time");
     }
 
     @Override
@@ -158,10 +224,21 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
         super.onResume();
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        sensorManager.unregisterListener(this, accelerometer);
+        running = false;
+        super.onDestroy();
+    }
+
     public void onSensorChanged(SensorEvent event) {
 
+        int coef = 5+rapid;
+        Log.d("coef",coef+" "+rapid);
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
-            if(Math.abs(event.values[0]) > 1 && i.getX() - (event.values[0]*4)>0 && i.getX() - (event.values[0]*4)+(i.getWidth())<largeur)
+            if(Math.abs(event.values[0]) > 1 && i.getX() - (event.values[0]*coef)>0 && i.getX() - (event.values[0]*coef)+(i.getWidth())<largeur)
             {
                 if(event.values[0]<0)
                     if(move<4)
@@ -187,7 +264,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
                         i.invalidate();
                     }
                 move = (move+1)%8;//0 1 2 3
-                i.setX(i.getX() - event.values[0]*5);
+                i.setX(i.getX() - event.values[0]*coef);
             }
         else
             {
@@ -198,6 +275,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
     }
 
     public static void setScore(int score){
+        sound.playSound(0);
         GamePlayActivity.score= score;
         tvScore.setText("score : "+score);
     }
@@ -207,10 +285,15 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
     }
 
     public static void setVie(int nbVie){
+        sound.playSound(1);
+        vib.vibrate(new long[]{500,100,500},-1);
         GamePlayActivity.nbVie= nbVie;
         if(nbVie >= 0)
             arrayImg.get(nbVie).setVisibility(View.INVISIBLE);
     }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     public static int getVie(){
         return nbVie;
@@ -220,17 +303,17 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
     {
         return i;
     }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+    
+    public static SoundManager getSound() {
+        return sound;
     }
 
-    public static int getHauteur() {
-        return hauteur;
+    public static void playIe(){mpIe.start();Log.d("Piege",rapid+"");}
+
+    public static void playMoz(){mpMoz.start();Log.d("Piege",rapid+"");}
+
+    public static void setRapid(int rapid) {
+        GamePlayActivity.rapid = rapid;
     }
 
-    public static Vibrator getVib() {
-        return vib;
-    }
 }

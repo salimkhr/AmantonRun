@@ -11,12 +11,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
     }
 
     /** Called when the user clicks the Send button */
     public void startGame(View view) {
         startActivity(new Intent(this,GamePlayActivity.class));
+    }
+    public void highScore(View view) { startActivity(new Intent(this,tableScoreActivity.class));
     }
 }

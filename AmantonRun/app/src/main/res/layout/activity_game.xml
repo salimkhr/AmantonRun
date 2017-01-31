@@ -11,13 +11,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
+        android:layout_height="70sp"
+        android:id="@+id/imageView"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             app:srcCompat="@mipmap/center"
             tools:ignore="ContentDescription"
-            android:contentDescription="@string/perso" />
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/perso"
+         />
 
     <TextView
         android:text="@string/score"
@@ -39,7 +42,7 @@
         android:id="@+id/linearLayout">
 
         <ImageView
-            android:layout_width="20dp"
+            android:layout_width="20sp"
             android:layout_height="wrap_content"
             app:srcCompat="@mipmap/life"
             android:id="@+id/life1"
@@ -51,19 +54,19 @@
             android:id="@+id/life2"
             android:layout_weight="1" />
         <ImageView
-            android:layout_width="20dp"
+            android:layout_width="20sp"
             android:layout_height="wrap_content"
             app:srcCompat="@mipmap/life"
             android:id="@+id/life3"
             android:layout_weight="1" />
         <ImageView
-            android:layout_width="20dp"
+            android:layout_width="20sp"
             android:layout_height="wrap_content"
             app:srcCompat="@mipmap/life"
             android:id="@+id/life4"
             android:layout_weight="1" />
         <ImageView
-            android:layout_width="20dp"
+            android:layout_width="20sp"
             android:layout_height="wrap_content"
             app:srcCompat="@mipmap/life"
             android:id="@+id/life5"

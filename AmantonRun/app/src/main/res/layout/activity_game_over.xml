@@ -13,7 +13,7 @@
 
 
     <TextView
-        android:text="A problem has been detected and Android has been shut down to prevent damage of your phone."
+        android:text="@string/a_problem_has_been_detected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -27,7 +27,7 @@
         android:textSize="15sp"/>
 
     <TextView
-        android:text="The problem seems to be caused by the following file: androCMD.SYS"
+        android:text="@string/the_problem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView6"
@@ -41,7 +41,7 @@
         android:textSize="15sp"/>
 
     <TextView
-        android:text="GAME_OVER"
+        android:text="@string/game_over"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView7"
@@ -55,7 +55,7 @@
         android:textSize="15sp"/>
 
     <TextView
-        android:text="If this is the first time you've seen this stop error screen, restart your phone. If this screen appears again, follow these steps:"
+        android:text="@string/if_this_is_the_first_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView8"
@@ -69,7 +69,7 @@
         android:textSize="15sp"/>
 
     <TextView
-        android:text="Check to be sure you have adequate disk space. If a driver is identified in the Stop message, disable the driver or check with the manufacturer for driver updates. try changing video adapters."
+        android:text="@string/check_to_be_sur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView9"
@@ -83,7 +83,7 @@
         android:textSize="15sp"/>
 
     <TextView
-        android:text="Score : "
+        android:text="@string/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView10"

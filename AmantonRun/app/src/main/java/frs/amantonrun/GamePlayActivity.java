@@ -125,7 +125,7 @@ public class GamePlayActivity extends AppCompatActivity implements SensorEventLi
                                     else
                                         iv.setImageResource(R.mipmap.java);
 
-                                    piege=1;
+                                    piege=0;
                                 }
                                 else if (rand<90)
                                 {

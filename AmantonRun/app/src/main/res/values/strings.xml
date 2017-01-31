@@ -14,4 +14,6 @@
     <string name="les_objets_a_recuperer">les objets a recuperer</string>
     <string name="les_pieges">Les pieges</string>
     <string name="la_vitesse">La vitesse</string>
+    <string name="duree">Durée</string>
+    <string name="date">Date</string>
 </resources>

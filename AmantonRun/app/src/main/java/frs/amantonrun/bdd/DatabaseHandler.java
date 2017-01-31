@@ -94,7 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
 
-            data.add(new Score(Integer.parseInt(cursor.getString(1)),String.format("%dmin, %02dsec",
+            data.add(new Score(Integer.parseInt(cursor.getString(1)),String.format("%d min, %02d sec",
                     TimeUnit.MILLISECONDS.toMinutes(Integer.parseInt(cursor.getString(2))),
                     TimeUnit.MILLISECONDS.toSeconds(Integer.parseInt(cursor.getString(2)) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(Integer.parseInt(cursor.getString(2)))

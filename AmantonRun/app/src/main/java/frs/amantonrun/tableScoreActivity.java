@@ -3,6 +3,7 @@ package frs.amantonrun;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -24,26 +25,45 @@ public class tableScoreActivity extends AppCompatActivity {
         //TextView tv = (TextView)findViewById(R.id.textViewHG);
         TableLayout tableLayout = (TableLayout)findViewById(R.id.tableLayout);
 
-        TableRow.LayoutParams llp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams llp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams tlp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
         llp.setMargins(5,5,5,5);//2px right-margin
-
+        tlp.setMargins(1,1,1,1);
         boolean b = true;
         for(Score s : allscore) {
             TableRow tr = new TableRow(this);
-            if(b)
-                tr.setBackgroundColor(Color.GREEN);
-
-            //tr.setBackgroundResource(R.drawable.border);
-
-            tr.setLayoutParams(llp);
 
             TextView ts = new TextView(this);
             TextView tt = new TextView(this);
             TextView td = new TextView(this);
 
-            ts.setPadding(2, 2, 2, 2);
-            tt.setPadding(2, 2, 2, 2);
-            td.setPadding(2, 2, 2, 2);
+            if(b)
+            {
+                ts.setBackgroundColor(Color.WHITE);
+                tt.setBackgroundColor(Color.WHITE);
+                td.setBackgroundColor(Color.WHITE);
+            }
+            else
+            {
+                ts.setBackgroundColor(Color.GRAY);
+                tt.setBackgroundColor(Color.GRAY);
+                td.setBackgroundColor(Color.GRAY);
+            }
+
+
+            tr.setLayoutParams(llp);
+
+            ts.setLayoutParams(tlp);
+            tt.setLayoutParams(tlp);
+            td.setLayoutParams(tlp);
+
+            ts.setPadding(10,10,10,10);
+            tt.setPadding(10,10,10,10);
+            td.setPadding(10,10,10,10);
+
+            ts.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            tt.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            td.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
             tr.addView(ts);
             tr.addView(tt);
